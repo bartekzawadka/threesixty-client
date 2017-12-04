@@ -1,0 +1,37 @@
+@import "app-theme";
+
+body {
+  margin: 0;
+}
+
+html {
+  min-width: 400px;
+}
+
+@font-face {
+  font-family: KabelFamily;
+  src: url('assets/fonts/Kabel Book BT.ttf');
+}
+
+.app-toolbar {
+  background: mat-color($mat-grey, 800);
+  min-height: 60px;
+  padding: 0 16px;
+  font-size: 20px;
+}
+div.site-title {
+  font-family: KabelFamily;
+  font-weight: 100;
+  font-size: 2em;
+  margin-left: 10px;
+  /*color: #488aff;*/
+  color: #fafafa;
+  //color: mat-color($threesixty-app-primary, 500);
+}
+
+.list-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
