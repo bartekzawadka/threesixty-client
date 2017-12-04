@@ -10,22 +10,33 @@ import {AppRoutingModule} from './app-routing.module';
 import { ImagesListComponent } from './images-list/images-list.component';
 import {AppMaterialModule} from './app-material.module';
 import { NewImageComponent } from './new-image/new-image.component';
+import { FilesListComponent } from './files-list/files-list.component';
+import {Formatting} from '../utilities/formatting';
+import {ThreesixtyService} from './threesixty.service';
+import { LoaderDialogComponent } from './loader-dialog/loader-dialog.component';
+import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ImagesListComponent,
-    NewImageComponent
+    NewImageComponent,
+    FilesListComponent,
+    LoaderDialogComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
     FormsModule,
     AppMaterialModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [Formatting, ThreesixtyService],
+  bootstrap: [AppComponent],
+  entryComponents: [LoaderDialogComponent, MessageDialogComponent]
 })
 export class AppModule { }

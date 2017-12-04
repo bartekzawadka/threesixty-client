@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ImagesListComponent} from './images-list/images-list.component';
+import {NewImageComponent} from './new-image/new-image.component';
 
 const appRoutes: Routes = [
   {
@@ -11,6 +12,10 @@ const appRoutes: Routes = [
   {
     path: 'images',
     component: ImagesListComponent
+  },
+  {
+    path: 'import',
+    component: NewImageComponent
   }
 ];
 

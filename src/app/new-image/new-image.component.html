@@ -1,3 +1,57 @@
-<p>
-  new-image works!
-</p>
+<div class="list-container">
+  <mat-card>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <h3 class="mat-title">
+        Import new image
+      </h3>
+    </div>
+
+    <!--<form #f="ngForm" class="form-flex" (ngSubmit)="submit()">-->
+    <!--<form [action]="sanitizer.bypassSecurityTrustUrl('http://localhost:58715/api/image/upload')"-->
+          <!--method="post" class="form-flex">-->
+    <form #f="ngForm" class="form-flex" (ngSubmit)="submit()">
+      <!--<mat-form-field>-->
+        <!--<input matInput placeholder="Name" name="name">-->
+        <!--<mat-error *ngIf="f.hasError('required', 'name')">-->
+          <!--Expense name is <strong>required</strong>-->
+        <!--</mat-error>-->
+      <!--</mat-form-field>-->
+      <div fxFlex fxLayoutAlign="center center" style="padding-top: 20px; padding-bottom: 20px">
+      <label class="upload-button">
+        <input type="file" #uploader multiple name="file" (change)="inputChanged($event)">
+        <a class="mat-raised-button dark-button">
+            <span class="mat-button-wrapper">
+              <mat-icon>attachment</mat-icon>
+              CHOOSE FILES
+            </span>
+        </a>
+      </label>
+      </div>
+      <div>
+      <app-files-list *ngIf="Files && Files.length > 0" [(data)]="Files"></app-files-list>
+      </div>
+      <mat-action-row>
+        <button mat-raised-button routerLink="/expenses">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+        <div fxFlex></div>
+        <div fxLayout="row" fxLayoutGap="15px">
+          <button mat-raised-button type="reset">
+            <mat-icon>clear_all</mat-icon>
+            Clear
+          </button>
+          <!--|| !Expense.Bill || (!Expense.Bill.BillData && !Expense.Bill.BillFile)-->
+          <!--
+          [disabled]="!f.valid || !Expense.Bill || (!Expense.Bill.BillData && !Expense.Bill.BillFile && !Expense.Bill.Id)"
+          -->
+          <button mat-raised-button color="primary" type="submit"
+                  [disabled]="!f.valid || !Files || Files.length == 0">
+            <mat-icon>send</mat-icon>
+            Send
+          </button>
+        </div>
+      </mat-action-row>
+    </form>
+  </mat-card>
+</div>

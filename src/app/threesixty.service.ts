@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {PageableArray} from '../models/PageableArray';
 import {ImagesFilter} from '../models/ImagesFilter';
@@ -55,5 +55,27 @@ export class ThreesixtyService {
     });
   }
 
+  uploadFiles(files: File[]) {
+    return new Promise((resolve, reject) => {
+      if (!files) {
+        reject('No files selected to upload');
+        return;
+      }
 
+      const formData = new FormData();
+      for (let k = 0; k < files.length; k++) {
+        formData.append('files[' + k + ']', files[k], files[k].name);
+      }
+
+      const headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+      const options = new RequestOptions(<RequestOptionsArgs>{headers: headers});
+
+      this.http.post(environment.threesixtyServiceUrl + '/api/image/upload', formData, options)
+        .map((res) => res.json()).subscribe((data) => {
+        resolve(data);
+      }, (error) => {
+        ThreesixtyService.handleError(error, reject);
+      });
+    });
+  }
 }
