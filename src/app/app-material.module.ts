@@ -14,13 +14,13 @@ import {MatIconModule} from '@angular/material/icon';
     MatToolbarModule, MatButtonModule, MatIconModule,
     MatMenuModule, MatGridListModule, MatCardModule, MatFormFieldModule,
     MatExpansionModule, MatInputModule, MatListModule, MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule, MatButtonModule
   ],
   exports: [
     MatToolbarModule, MatButtonModule, MatIconModule,
     MatMenuModule, MatGridListModule, MatCardModule, MatFormFieldModule,
     MatExpansionModule, MatInputModule, MatListModule, MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule, MatButtonModule
   ],
   declarations: []
 })

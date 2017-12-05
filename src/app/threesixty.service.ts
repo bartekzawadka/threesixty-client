@@ -12,7 +12,12 @@ export class ThreesixtyService {
   }
 
   private static handleError(error: any, reject: (any) => void) {
-    if (error && error.error) {
+    if (error && error._body) {
+      const body = JSON.parse(error._body);
+      if (body && body.error) {
+        reject(body.error);
+      }
+    } else if (error && error.error) {
       reject(error.error);
     } else if (error && error.statusText) {
       reject(error.statusText);

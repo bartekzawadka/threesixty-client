@@ -16,6 +16,7 @@ import {ThreesixtyService} from './threesixty.service';
 import { LoaderDialogComponent } from './loader-dialog/loader-dialog.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 import {HttpModule} from '@angular/http';
+import {DialogService} from './dialog.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import {HttpModule} from '@angular/http';
     FormsModule,
     AppMaterialModule
   ],
-  providers: [Formatting, ThreesixtyService],
+  providers: [Formatting, ThreesixtyService, DialogService],
   bootstrap: [AppComponent],
   entryComponents: [LoaderDialogComponent, MessageDialogComponent]
 })

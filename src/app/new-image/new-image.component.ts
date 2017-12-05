@@ -3,6 +3,8 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {ThreesixtyService} from '../threesixty.service';
 import {LoaderDialogComponent} from '../loader-dialog/loader-dialog.component';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
+import {DialogService} from '../dialog.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-image',
@@ -11,10 +13,11 @@ import {MessageDialogComponent} from '../message-dialog/message-dialog.component
 })
 export class NewImageComponent implements OnInit {
 
-  private Files: File[];
+  public Files: File[];
 
-  constructor(public dialog: MatDialog,
-              public threesixtyService: ThreesixtyService) {
+  constructor(private router: Router,
+              public threesixtyService: ThreesixtyService,
+              public dialogService: DialogService) {
   }
 
   ngOnInit() {
@@ -27,34 +30,14 @@ export class NewImageComponent implements OnInit {
   }
 
   submit() {
-    const dialog = this.dialog.open(LoaderDialogComponent, <MatDialogConfig>{
-      disableClose: true
-    });
 
-    this.threesixtyService.uploadFiles(this.Files).then(data => {
-      dialog.close();
-      dialog.afterClosed().subscribe(() => {
-        this.dialog.open(MessageDialogComponent, <MatDialogConfig>{
-          disableClose: true,
-          data: {
-            title: 'Success',
-            message: 'Import completed successfully',
-            type: 'info'
-          }
-        });
-      });
-    }, error => {
-      dialog.close();
-      dialog.afterClosed().subscribe(() => {
-        this.dialog.open(MessageDialogComponent, <MatDialogConfig>{
-          disableClose: true,
-          data: {
-            title: 'Operation failed',
-            message: error,
-            type: 'error'
-          }
-        });
-      });
+    this.dialogService.showLoader(this.threesixtyService.uploadFiles(this.Files), (error) => {
+
+      if (error) {
+        this.dialogService.showMessage('Operation failed', error, 'error');
+        return;
+      }
+      this.router.navigate(['/images']);
     });
   }
 }

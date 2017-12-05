@@ -1,7 +1,31 @@
-<div>
-  <mat-grid-list [cols]="nbCols" rowHeight="4:3">
-    <mat-grid-tile >
-
+<div style="margin-left: 10px; margin-right: 10px; margin-top: 10px;">
+  <mat-grid-list [cols]="nbCols" rowHeight="4:3" [gutterSize]="nbGutter">
+    <mat-grid-tile *ngFor="let image of images.Rows">
+      <img class="list-item-thumbnail" src="{{image.thumbnail}}">
+      <mat-grid-tile-footer>
+        <div fxLayout="row" fxFlex fxLayoutAlign="stretch center">
+          <div fxFlex fxLayout="column" *ngIf="image.name">
+            <h3 class="grid-footer-title">{{image.name}}</h3>
+            <span class="grid-footer-title">{{image.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+          </div>
+          <div fxFlex fxLayout="column" *ngIf="!image.name">
+            <h3 class="grid-footer-title">{{image.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}</h3>
+          </div>
+          <button mat-mini-fab class="mat-elevation-z0 grid-footer-tile-fab" [matMenuTriggerFor]="downloadMenu">
+            <mat-icon>file_download</mat-icon>
+          </button>
+          <mat-menu #downloadMenu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>insert_drive_file</mat-icon>
+              Stroller JSON
+            </button>
+            <button mat-menu-item disabled>
+              <mat-icon>burst_mode</mat-icon>
+              ZIP chunks package
+            </button>
+          </mat-menu>
+        </div>
+      </mat-grid-tile-footer>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
