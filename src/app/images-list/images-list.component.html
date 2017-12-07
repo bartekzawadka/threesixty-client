@@ -15,13 +15,13 @@
             <mat-icon>file_download</mat-icon>
           </button>
           <mat-menu #downloadMenu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="downloadImage(image.id, image.name,'json')">
               <mat-icon>insert_drive_file</mat-icon>
-              Stroller JSON
+              JSON
             </button>
-            <button mat-menu-item disabled>
+            <button mat-menu-item (click)="downloadImage(image.id, image.name,'zip')">
               <mat-icon>burst_mode</mat-icon>
-              ZIP chunks package
+              ZIP
             </button>
           </mat-menu>
         </div>

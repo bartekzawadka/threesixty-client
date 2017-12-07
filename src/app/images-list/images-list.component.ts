@@ -3,6 +3,7 @@ import {ObservableMedia} from '@angular/flex-layout';
 import {PageableArray} from '../../models/PageableArray';
 import {ThreesixtyService} from '../threesixty.service';
 import {DialogService} from '../dialog.service';
+import {saveAs} from 'file-saver/FileSaver';
 
 @Component({
   selector: 'app-images-list',
@@ -45,7 +46,7 @@ export class ImagesListComponent implements OnInit {
     if (this.media.isActive('xs')) {
       this.nbCols = 1;
       this.nbGutter = '8px';
-    }else if (this.media.isActive('sm')) {
+    } else if (this.media.isActive('sm')) {
       this.nbCols = 2;
       this.nbGutter = '8px';
     } else if (this.media.isActive('md')) {
@@ -58,6 +59,20 @@ export class ImagesListComponent implements OnInit {
       this.nbCols = 4;
       this.nbGutter = '20px';
     }
+  }
+
+  downloadImage(id: number, fileName: string, type: string) {
+    this.dService.showLoader(this.threesixtyService.downloadImage(id, type, fileName).then((data) => {
+      try {
+        saveAs(data.FileData, data.FileName);
+      } catch (e) {
+        this.dService.showMessage('Operation failed', e, 'error');
+      }
+    }), (error) => {
+      if (error) {
+        this.dService.showMessage('Operation failed', error, 'error');
+      }
+    });
   }
 
 }

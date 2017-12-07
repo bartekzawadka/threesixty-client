@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, RequestOptionsArgs} from '@angular/http';
+import {Http, RequestOptions, RequestOptionsArgs, ResponseContentType} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {PageableArray} from '../models/PageableArray';
 import {ImagesFilter} from '../models/ImagesFilter';
 import {environment} from '../environments/environment';
+import {FileResult} from '../models/FileResult';
 
 @Injectable()
 export class ThreesixtyService {
@@ -78,6 +79,71 @@ export class ThreesixtyService {
       this.http.post(environment.threesixtyServiceUrl + '/api/image/upload', formData, options)
         .map((res) => res.json()).subscribe((data) => {
         resolve(data);
+      }, (error) => {
+        ThreesixtyService.handleError(error, reject);
+      });
+    });
+  }
+
+  downloadImage(id: number, type: string, fileName: string) {
+    return new Promise<FileResult>((resolve, reject) => {
+      let url = environment.threesixtyServiceUrl + '/api/image/' + id + '/download';
+      if (type) {
+        url += ((url.indexOf('?') === -1) ? '?' : '&') + 'format=' + type;
+      }
+      if (fileName) {
+        url += ((url.indexOf('?') === -1) ? '?' : '&') + 'fileName=' + fileName;
+      }
+
+      this.http.get(url, {
+        responseType: ResponseContentType.ArrayBuffer
+      }).subscribe((data) => {
+
+        try {
+
+          if (!data || !data.headers) {
+            reject('Response could not be parsed. No headers received');
+            return;
+          }
+
+          if (!data['_body']) {
+            reject('Empty data received');
+          }
+
+          const contentType = data.headers.get('content-type');
+          const contentDisposition = data.headers.get('content-disposition');
+
+          if (!contentType || !contentDisposition) {
+            reject('Response does not contain expected headers. Invalid format');
+            return;
+          }
+
+          const parts: string[] = contentDisposition.split(';');
+          if (!parts || parts.length < 2) {
+            reject('Content disposition header has invalid format');
+            return;
+          }
+
+          const fileNameParts = parts[1].split('=');
+          let fName: string;
+
+          if (!fileNameParts || fileNameParts.length < 2) {
+            console.warn('Content disposition header does not contain file name');
+            fName = 'file';
+          } else {
+            fName = fileNameParts[1];
+          }
+          const filename = fName;
+
+          const result = new FileResult();
+          result.FileData = new Blob([data['_body']], {type: contentType});
+          result.FileName = filename;
+
+          resolve(result);
+
+        } catch (e) {
+          reject(e);
+        }
       }, (error) => {
         ThreesixtyService.handleError(error, reject);
       });
