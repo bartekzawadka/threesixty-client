@@ -61,6 +61,26 @@ export class ThreesixtyService {
     });
   }
 
+  getImage(id: number) {
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.threesixtyServiceUrl + '/api/image/' + id).map((res) => res.json()).subscribe((data) => {
+        if (data.chunks && data.chunks.length > 0) {
+          this.http.get(environment.threesixtyServiceUrl + '/api/chunk/' + data.chunks[0].id).map((res) => res.json())
+            .subscribe((chunk) => {
+              if (chunk && chunk.data) {
+                data.chunk = chunk.data;
+              }
+              resolve(data);
+            });
+        } else {
+          resolve(data);
+        }
+      }, (error) => {
+        ThreesixtyService.handleError(error, reject);
+      });
+    });
+  }
+
   uploadFiles(files: File[]) {
     return new Promise((resolve, reject) => {
       if (!files) {

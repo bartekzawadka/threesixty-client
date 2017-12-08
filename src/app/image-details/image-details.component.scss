@@ -1,0 +1,26 @@
+.details-card {
+  max-width: 400px;
+  min-width: 40%;
+}
+
+.details-section {
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.details-section > * {
+  width: 100% !important;
+}
+
+.details-image {
+  max-width: 600px;
+}
+
+.details-row {
+  width: 30%;
+  min-width: 100px;
+}
+
+.card-box {
+  margin-top: 20px
+}

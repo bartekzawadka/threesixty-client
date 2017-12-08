@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ObservableMedia} from '@angular/flex-layout';
 import {PageableArray} from '../../models/PageableArray';
 import {ThreesixtyService} from '../threesixty.service';
 import {DialogService} from '../dialog.service';
 import {saveAs} from 'file-saver/FileSaver';
+import {ILoadData} from '../../models/interfaces/ILoadData';
 
 @Component({
   selector: 'app-images-list',
   templateUrl: './images-list.component.html',
-  styleUrls: ['./images-list.component.scss']
+  styleUrls: ['./images-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
-export class ImagesListComponent implements OnInit {
+export class ImagesListComponent implements OnInit, ILoadData {
 
   public nbCols = 4;
   public nbGutter = '2vw';
@@ -21,7 +23,7 @@ export class ImagesListComponent implements OnInit {
   constructor(private media: ObservableMedia,
               private threesixtyService: ThreesixtyService,
               private dService: DialogService) {
-    this.getData();
+    this.loadData();
   }
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class ImagesListComponent implements OnInit {
     });
   }
 
-  getData() {
+  loadData() {
     this.dService.showLoader(this.threesixtyService.getImages(null, this.images.PageIndex, this.images.PageSize)
       .then((data) => {
         this.images = data;

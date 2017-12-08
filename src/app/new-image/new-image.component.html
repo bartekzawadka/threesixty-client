@@ -9,7 +9,7 @@
     <form #f="ngForm" class="form-flex" (ngSubmit)="submit()">
       <div class="upload-button" fxFlex align="center">
         <label>
-          <input type="file" #uploader multiple name="file" (change)="inputChanged($event)">
+          <input type="file" #uploader multiple name="file" (change)="inputChanged($event)" accept=".json">
           <a class="mat-raised-button dark-button">
             <span class="mat-button-wrapper">
               <mat-icon>attachment</mat-icon>

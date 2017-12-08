@@ -1,0 +1,45 @@
+<div fxFlex fxLayout="row" fxLayoutAlign="center center" class="card-box">
+  <mat-card class="details-card">
+    <mat-card-header>
+      <mat-card-title *ngIf="data && data.name"><b>{{data.name}}</b></mat-card-title>
+      <mat-card-title *ngIf="!data || !data.name"><i>Unknown image</i></mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="{{data.thumbnail}}" *ngIf="!data.chunk">
+    <img mat-card-image src="{{data.chunk}}" *ngIf="data.chunk">
+    <mat-card-content>
+      <div class="details-section">
+        <div fxFlex fxLayout="row" fxLayoutAlign="stretch center">
+          <div>Chunk width:</div>
+          <span fxFlex></span>
+          <div>{{data.chunkWidth}} px</div>
+        </div>
+      </div>
+      <div class="details-section">
+        <div fxFlex fxLayout="row" fxLayoutAlign="stretch center">
+          <div>Chunk height:</div>
+          <span fxFlex></span>
+          <div >{{data.chunkHeight}} px</div>
+        </div>
+      </div>
+      <div class="details-section" *ngIf="data.chunks">
+        <div fxFlex fxLayout="row" fxLayoutAlign="stretch center">
+          <div>Number of chunks:</div>
+          <span fxFlex></span>
+          <div>{{data.chunks.length}}</div>
+        </div>
+      </div>
+      <div class="details-section" *ngIf="data.chunks">
+        <div fxFlex fxLayout="row" fxLayoutAlign="stretch center">
+          <div>Created at:</div>
+          <span fxFlex></span>
+          <div>{{data.createdAt | date: "yyyy-MM-dd HH:mm:ss"}}</div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <span fxFlex></span>
+      <button mat-raised-button routerLink="/images">Close</button>
+      <span fxFlex></span>
+    </mat-card-actions>
+  </mat-card>
+</div>

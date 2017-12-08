@@ -17,6 +17,7 @@ import { LoaderDialogComponent } from './loader-dialog/loader-dialog.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 import {HttpModule} from '@angular/http';
 import {DialogService} from './dialog.service';
+import { ImageDetailsComponent } from './image-details/image-details.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {DialogService} from './dialog.service';
     NewImageComponent,
     FilesListComponent,
     LoaderDialogComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ImageDetailsComponent
   ],
   imports: [
     BrowserModule,
