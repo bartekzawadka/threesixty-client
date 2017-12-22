@@ -21,11 +21,8 @@ export class ImageDetailsComponent implements OnInit, ILoadData {
               private route: ActivatedRoute) {
     this.route.params.subscribe((p: Params) => {
       if (!p || !p['id']) {
-        console.log('NO ID PARAM!');
         return;
       }
-
-      console.log('ID: ' + p['id']);
 
       this.id = p['id'];
       this.loadData();
@@ -37,8 +34,6 @@ export class ImageDetailsComponent implements OnInit, ILoadData {
 
   loadData() {
     this.dService.showLoader(this.threesixtyService.getImage(this.id).then(data => {
-      console.log('data received:');
-      console.log(data);
       this.data = data;
     }), (error) => {
       if (error) {

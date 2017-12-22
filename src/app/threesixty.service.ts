@@ -13,17 +13,21 @@ export class ThreesixtyService {
   }
 
   private static handleError(error: any, reject: (any) => void) {
-    if (error && error._body) {
-      const body = JSON.parse(error._body);
-      if (body && body.error) {
-        reject(body.error);
+    try {
+      if (error && error._body) {
+        const body = JSON.parse(error._body);
+        if (body && body.error) {
+          reject(body.error);
+        }
+      } else if (error && error.error) {
+        reject(error.error);
+      } else if (error && error.statusText) {
+        reject(error.statusText);
+      } else {
+        reject(error);
       }
-    } else if (error && error.error) {
-      reject(error.error);
-    } else if (error && error.statusText) {
-      reject(error.statusText);
-    } else {
-      reject(error);
+    } catch (e) {
+      reject('Error occured while parsing response: ' + e);
     }
   }
 
