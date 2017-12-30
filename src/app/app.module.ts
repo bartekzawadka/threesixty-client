@@ -13,11 +13,15 @@ import { NewImageComponent } from './new-image/new-image.component';
 import { FilesListComponent } from './files-list/files-list.component';
 import {Formatting} from '../utilities/formatting';
 import {ThreesixtyService} from './threesixty.service';
-import { LoaderDialogComponent } from './loader-dialog/loader-dialog.component';
-import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { LoaderDialogComponent } from './dialogs/loader-dialog/loader-dialog.component';
+import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 import {HttpModule} from '@angular/http';
 import {DialogService} from './dialog.service';
 import { ImageDetailsComponent } from './image-details/image-details.component';
+import {CookieService} from 'ngx-cookie-service';
+import { LoginComponent } from './dialogs/login/login.component';
+import {AuthService} from './auth.service';
+import {JwtHelper} from 'angular2-jwt';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,8 @@ import { ImageDetailsComponent } from './image-details/image-details.component';
     FilesListComponent,
     LoaderDialogComponent,
     MessageDialogComponent,
-    ImageDetailsComponent
+    ImageDetailsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +43,8 @@ import { ImageDetailsComponent } from './image-details/image-details.component';
     FormsModule,
     AppMaterialModule
   ],
-  providers: [Formatting, ThreesixtyService, DialogService],
+  providers: [Formatting, ThreesixtyService, DialogService, CookieService, AuthService, JwtHelper],
   bootstrap: [AppComponent],
-  entryComponents: [LoaderDialogComponent, MessageDialogComponent]
+  entryComponents: [LoaderDialogComponent, MessageDialogComponent, LoginComponent]
 })
 export class AppModule { }

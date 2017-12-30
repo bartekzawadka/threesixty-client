@@ -1,0 +1,31 @@
+<div>
+  <div fxLayout="row" fxFlex fxLayoutAlign="stretch center">
+    <h4 class="mat-title">Log in</h4>
+  </div>
+</div>
+<div mat-dialog-content>
+  <form #loginForm="ngForm" class="form-flex">
+    <mat-form-field>
+      <input matInput placeholder="Username" required name="username" [(ngModel)]="LoginInfo.Username">
+      <mat-error *ngIf="loginForm.hasError('required', 'username')">
+        User name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" required name="password" [(ngModel)]="LoginInfo.Password"
+             type="password">
+      <mat-error *ngIf="loginForm.hasError('required', 'password')">
+        Password is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <div fxLayout="row" fxFlex>
+    <span fxFlex></span>
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="button" [disabled]="!loginForm.valid"
+            [mat-dialog-close]="LoginInfo">OK
+    </button>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
-import {LoaderDialogComponent} from './loader-dialog/loader-dialog.component';
-import {MessageDialogComponent} from './message-dialog/message-dialog.component';
+import {LoaderDialogComponent} from './dialogs/loader-dialog/loader-dialog.component';
+import {MessageDialogComponent} from './dialogs/message-dialog/message-dialog.component';
 
 @Injectable()
 export class DialogService {
@@ -35,8 +35,9 @@ export class DialogService {
   private closeDialog<T>(dRef: MatDialogRef<T>, dialogClosed: (error: any) => void = null, error: any = null) {
     dRef.close();
     dRef.afterClosed().subscribe(() => {
-      if (dialogClosed)
+      if (dialogClosed) {
         dialogClosed(error);
+      }
     });
   }
 }

@@ -5,6 +5,8 @@ import {PageableArray} from '../models/PageableArray';
 import {ImagesFilter} from '../models/ImagesFilter';
 import {environment} from '../environments/environment';
 import {FileResult} from '../models/FileResult';
+import {LoginInfo} from '../models/auth/LoginInfo';
+import {LoggedUserInfo} from '../models/auth/LoggedUserInfo';
 
 @Injectable()
 export class ThreesixtyService {
@@ -171,6 +173,18 @@ export class ThreesixtyService {
       }, (error) => {
         ThreesixtyService.handleError(error, reject);
       });
+    });
+  }
+
+  authenticate(loginInfo: LoginInfo) {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(environment.threesixtyServiceUrl + '/api/user/token', loginInfo)
+        .map(res => res.json())
+        .subscribe((data) => {
+          resolve(data);
+        }, error => {
+          ThreesixtyService.handleError(error, reject);
+        });
     });
   }
 }

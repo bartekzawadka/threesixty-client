@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  threesixtyServiceUrl: 'http://localhost:58715'
+  threesixtyServiceUrl: 'http://localhost:5000'
 };

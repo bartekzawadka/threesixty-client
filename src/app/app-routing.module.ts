@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ImagesListComponent} from './images-list/images-list.component';
 import {NewImageComponent} from './new-image/new-image.component';
 import {ImageDetailsComponent} from './image-details/image-details.component';
@@ -17,7 +17,7 @@ const appRoutes: Routes = [
   {
     path: 'import',
     component: NewImageComponent
-  },{
+  }, {
     path: 'image/:id',
     component: ImageDetailsComponent
   }
@@ -37,4 +37,5 @@ const appRoutes: Routes = [
   ],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
