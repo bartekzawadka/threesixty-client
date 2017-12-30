@@ -3,6 +3,7 @@ import {LoggedUserInfo} from '../models/auth/LoggedUserInfo';
 import {LoginInfo} from '../models/auth/LoginInfo';
 import {ThreesixtyService} from './threesixty.service';
 import {CookieService} from 'ngx-cookie-service';
+import {ChangePasswordInfo} from '../models/auth/ChangePasswordInfo';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,14 @@ export class AuthService {
 
   private setToDefault() {
     this.userInfo = new LoggedUserInfo();
+  }
+
+  private extractUserInfo(data) {
+    this.userInfo = new LoggedUserInfo();
+    this.userInfo.IsAuthenticated = true;
+    this.userInfo.Token = data.token;
+    this.userInfo.Username = data.user.username;
+    this.userInfo.Fullname = data.user.fullname;
   }
 
   public getUserInfo(): LoggedUserInfo {
@@ -55,14 +64,6 @@ export class AuthService {
         reject(error);
       });
     });
-  }
-
-  private extractUserInfo(data) {
-    this.userInfo = new LoggedUserInfo();
-    this.userInfo.IsAuthenticated = true;
-    this.userInfo.Token = data.token;
-    this.userInfo.Username = data.user.username;
-    this.userInfo.Fullname = data.user.fullname;
   }
 
   public logoff() {

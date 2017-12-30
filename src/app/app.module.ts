@@ -21,7 +21,8 @@ import { ImageDetailsComponent } from './image-details/image-details.component';
 import {CookieService} from 'ngx-cookie-service';
 import { LoginComponent } from './dialogs/login/login.component';
 import {AuthService} from './auth.service';
-import {JwtHelper} from 'angular2-jwt';
+import {TokenInterceptor} from './auth/token.interceptor';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,11 @@ import {JwtHelper} from 'angular2-jwt';
     FormsModule,
     AppMaterialModule
   ],
-  providers: [Formatting, ThreesixtyService, DialogService, CookieService, AuthService, JwtHelper],
+  providers: [Formatting, ThreesixtyService, DialogService, CookieService, AuthService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent],
   entryComponents: [LoaderDialogComponent, MessageDialogComponent, LoginComponent]
 })

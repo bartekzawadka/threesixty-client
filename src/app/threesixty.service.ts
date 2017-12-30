@@ -6,7 +6,6 @@ import {ImagesFilter} from '../models/ImagesFilter';
 import {environment} from '../environments/environment';
 import {FileResult} from '../models/FileResult';
 import {LoginInfo} from '../models/auth/LoginInfo';
-import {LoggedUserInfo} from '../models/auth/LoggedUserInfo';
 
 @Injectable()
 export class ThreesixtyService {
