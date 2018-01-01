@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoginComponent} from './dialogs/login/login.component';
 import {LoginInfo} from '../models/auth/LoginInfo';
@@ -10,7 +10,7 @@ import {AuthService} from './auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy{
   title = 'app';
   loginInfo = new LoginInfo();
 
@@ -32,5 +32,10 @@ export class AppComponent {
         }));
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    console.log('DESTROYING!');
+    this.authService.logoff();
   }
 }

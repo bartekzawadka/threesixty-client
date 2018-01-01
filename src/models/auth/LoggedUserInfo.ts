@@ -3,4 +3,5 @@ export class LoggedUserInfo {
   Token: string;
   Username: string;
   Fullname: string;
+  Expires: Date;
 }

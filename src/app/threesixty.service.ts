@@ -23,6 +23,12 @@ export class ThreesixtyService {
           reject(body.error);
         }
       } else if (error && error.error) {
+
+        if (error.error.error) {
+          reject(error.error.error);
+          return;
+        }
+
         try {
           const erM = JSON.parse(error.error);
           if (erM && erM.error) {
@@ -237,6 +243,15 @@ export class ThreesixtyService {
         responseType: 'text' as 'json'
       })
         .subscribe(() => resolve(), error => ThreesixtyService.handleError(error, reject));
+    });
+  }
+
+  refreshToken() {
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.threesixtyServiceUrl + '/api/user/refreshToken')
+        .subscribe(data => {
+          resolve(data);
+        }, error => ThreesixtyService.handleError(error, reject));
     });
   }
 }

@@ -26,6 +26,9 @@ export class AuthService {
     this.userInfo.Token = data.token;
     this.userInfo.Username = data.user.username;
     this.userInfo.Fullname = data.user.fullname;
+    if (data.expires) {
+      this.userInfo.Expires = new Date(data.expires);
+    }
   }
 
   public getUserInfo(): LoggedUserInfo {
@@ -45,21 +48,7 @@ export class AuthService {
   public login(user: LoginInfo): Promise<LoggedUserInfo> {
     return new Promise<LoggedUserInfo>((resolve, reject) => {
       this.threesixtyService.authenticate(user).then(data => {
-        if (!data || !data.token) {
-          reject('No token data received!');
-          return;
-        }
-
-        if (!data.user) {
-          reject('No user data received!');
-          return;
-        }
-
-        this.setToDefault();
-        this.cookieService.set('userr', JSON.stringify(data));
-        this.extractUserInfo(data);
-
-        resolve(this.getUserInfo());
+        this.processNewToken(data, resolve, reject);
       }).catch(error => {
         reject(error);
       });
@@ -73,5 +62,33 @@ export class AuthService {
 
   public changePassword(info: ChangePasswordInfo) {
     return this.threesixtyService.changePassword(info);
+  }
+
+  public refreshToken() {
+    return new Promise<LoggedUserInfo>((resolve, reject) => {
+      this.threesixtyService.refreshToken().then(data => {
+        this.processNewToken(data, resolve, reject);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+  private processNewToken(data, resolve, reject) {
+    if (!data || !data.token) {
+      reject('No token data received!');
+      return;
+    }
+
+    if (!data.user) {
+      reject('No user data received!');
+      return;
+    }
+
+    this.setToDefault();
+    this.cookieService.set('userr', JSON.stringify(data));
+    this.extractUserInfo(data);
+
+    resolve(this.getUserInfo());
   }
 }
