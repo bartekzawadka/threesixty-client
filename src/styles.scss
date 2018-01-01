@@ -39,9 +39,7 @@ div.site-title {
   font-weight: 100;
   font-size: 2em;
   margin-left: 10px;
-  /*color: #488aff;*/
   color: #fafafa;
-  //color: mat-color($threesixty-app-primary, 500);
 }
 
 .list-container {
@@ -65,4 +63,29 @@ div.site-title {
   width: 100%;
   display: block;
   border-top: 1px solid mat-color($mat-grey, 400);
+}
+
+.custom-list-item-heading {
+  font-size: 1.1em;
+  color: mat-color($mat-grey, 700);
+  margin-bottom: 5px;
+}
+
+.custom-list-item-subheading {
+  font-size: 0.7em;
+  color: mat-color($mat-grey, 600);
+}
+
+.custom-list-item-row {
+  margin-top: 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid #ddd
+}
+
+p.mat-line {
+  color: mat-color($mat-grey, 500);
+}
+
+.mat-list-item-content{
+  border-bottom: 1px solid #ddd
 }

@@ -15,14 +15,15 @@ import {Formatting} from '../utilities/formatting';
 import {ThreesixtyService} from './threesixty.service';
 import { LoaderDialogComponent } from './dialogs/loader-dialog/loader-dialog.component';
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
-import {HttpModule} from '@angular/http';
 import {DialogService} from './dialog.service';
 import { ImageDetailsComponent } from './image-details/image-details.component';
 import {CookieService} from 'ngx-cookie-service';
 import { LoginComponent } from './dialogs/login/login.component';
 import {AuthService} from './auth.service';
 import {TokenInterceptor} from './auth/token.interceptor';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -33,16 +34,18 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     LoaderDialogComponent,
     MessageDialogComponent,
     ImageDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    ManageUsersComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
     FormsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    HttpClientModule
   ],
   providers: [Formatting, ThreesixtyService, DialogService, CookieService, AuthService, {
     provide: HTTP_INTERCEPTORS,

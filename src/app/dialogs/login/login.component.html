@@ -6,13 +6,13 @@
 <div mat-dialog-content>
   <form #loginForm="ngForm" class="form-flex">
     <mat-form-field>
-      <input matInput placeholder="Username" required name="username" [(ngModel)]="LoginInfo.Username">
+      <input matInput placeholder="Username" required name="username" [(ngModel)]="LoginInfo.username">
       <mat-error *ngIf="loginForm.hasError('required', 'username')">
         User name is <strong>required</strong>
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Password" required name="password" [(ngModel)]="LoginInfo.Password"
+      <input matInput placeholder="Password" required name="password" [(ngModel)]="LoginInfo.password"
              type="password">
       <mat-error *ngIf="loginForm.hasError('required', 'password')">
         Password is <strong>required</strong>

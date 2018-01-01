@@ -1,16 +1,18 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, RequestOptionsArgs, ResponseContentType} from '@angular/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {PageableArray} from '../models/PageableArray';
 import {ImagesFilter} from '../models/ImagesFilter';
 import {environment} from '../environments/environment';
 import {FileResult} from '../models/FileResult';
 import {LoginInfo} from '../models/auth/LoginInfo';
+import {UserInfo} from '../models/user/UserInfo';
+import {ChangePasswordInfo} from '../models/auth/ChangePasswordInfo';
 
 @Injectable()
 export class ThreesixtyService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   private static handleError(error: any, reject: (any) => void) {
@@ -21,7 +23,15 @@ export class ThreesixtyService {
           reject(body.error);
         }
       } else if (error && error.error) {
-        reject(error.error);
+        try {
+          const erM = JSON.parse(error.error);
+          if (erM && erM.error) {
+            reject(erM.error);
+          }
+        } catch (e) {
+        }
+      } else if (error && error.message) {
+        reject(error.message);
       } else if (error && error.statusText) {
         reject(error.statusText);
       } else {
@@ -49,7 +59,7 @@ export class ThreesixtyService {
         }
       }
 
-      this.http.get(uri).map((res) => res.json()).subscribe((data) => {
+      this.http.get<any>(uri).subscribe((data) => {
         const result = new PageableArray();
         result.PageIndex = skip;
         result.PageSize = limit;
@@ -68,9 +78,9 @@ export class ThreesixtyService {
 
   getImage(id: number) {
     return new Promise((resolve, reject) => {
-      this.http.get(environment.threesixtyServiceUrl + '/api/image/' + id).map((res) => res.json()).subscribe((data) => {
+      this.http.get<any>(environment.threesixtyServiceUrl + '/api/image/' + id).subscribe((data) => {
         if (data.chunks && data.chunks.length > 0) {
-          this.http.get(environment.threesixtyServiceUrl + '/api/chunk/' + data.chunks[0].id).map((res) => res.json())
+          this.http.get<any>(environment.threesixtyServiceUrl + '/api/chunk/' + data.chunks[0].id)
             .subscribe((chunk) => {
               if (chunk && chunk.data) {
                 data.chunk = chunk.data;
@@ -98,15 +108,17 @@ export class ThreesixtyService {
         formData.append('files[' + k + ']', files[k], files[k].name);
       }
 
-      const headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-      const options = new RequestOptions(<RequestOptionsArgs>{headers: headers});
+      const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+      // const options = new RequestOptions(<RequestOptionsArgs>{headers: headers});
 
-      this.http.post(environment.threesixtyServiceUrl + '/api/image/upload', formData, options)
-        .map((res) => res.json()).subscribe((data) => {
-        resolve(data);
-      }, (error) => {
-        ThreesixtyService.handleError(error, reject);
-      });
+      this.http.post<any>(environment.threesixtyServiceUrl + '/api/image/upload', formData, {
+        headers: headers
+      })
+        .subscribe((data) => {
+          resolve(data);
+        }, (error) => {
+          ThreesixtyService.handleError(error, reject);
+        });
     });
   }
 
@@ -120,8 +132,8 @@ export class ThreesixtyService {
         url += ((url.indexOf('?') === -1) ? '?' : '&') + 'fileName=' + fileName;
       }
 
-      this.http.get(url, {
-        responseType: ResponseContentType.ArrayBuffer
+      this.http.get<any>(url, {
+        responseType: 'arrayBuffer' as 'json'
       }).subscribe((data) => {
 
         try {
@@ -178,12 +190,53 @@ export class ThreesixtyService {
   authenticate(loginInfo: LoginInfo) {
     return new Promise<any>((resolve, reject) => {
       this.http.post(environment.threesixtyServiceUrl + '/api/user/token', loginInfo)
-        .map(res => res.json())
         .subscribe((data) => {
           resolve(data);
         }, error => {
           ThreesixtyService.handleError(error, reject);
         });
+    });
+  }
+
+  getUsers(): Promise<Array<UserInfo>> {
+    return new Promise<Array<UserInfo>>((resolve, reject) => {
+      this.http.get<Array<UserInfo>>(environment.threesixtyServiceUrl + '/api/user')
+        .subscribe(data => {
+
+          if (!data || !data.length) {
+            resolve(null);
+            return;
+          }
+
+          resolve(data);
+        }, error => {
+          ThreesixtyService.handleError(error, reject);
+        });
+    });
+  }
+
+  changePassword(changePasswordInfo: ChangePasswordInfo) {
+    return new Promise((resolve, reject) => {
+
+      if (!changePasswordInfo) {
+        reject('New password has not been provided');
+        return;
+      }
+
+      if (!changePasswordInfo.username) {
+        reject('User name has not been provided');
+        return;
+      }
+
+      if (!changePasswordInfo.password || !changePasswordInfo.oldPassword || !changePasswordInfo.passwordConfirm) {
+        reject('Invalid data. Some parts are missing');
+        return;
+      }
+
+      this.http.post<any>(environment.threesixtyServiceUrl + '/api/user/changePassword', changePasswordInfo, {
+        responseType: 'text' as 'json'
+      })
+        .subscribe(() => resolve(), error => ThreesixtyService.handleError(error, reject));
     });
   }
 }

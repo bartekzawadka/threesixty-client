@@ -21,13 +21,18 @@ export class DialogService {
     });
   }
 
-  showMessage(title, message, type) {
-    this.dialog.open(MessageDialogComponent, <MatDialogConfig>{
+  showMessage(title, message, type, messageClosed: () => void = null) {
+    const dialogRef = this.dialog.open(MessageDialogComponent, <MatDialogConfig>{
       disableClose: true,
       data: {
         title: title,
         message: message,
         type: type
+      }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      if (messageClosed) {
+        messageClosed();
       }
     });
   }

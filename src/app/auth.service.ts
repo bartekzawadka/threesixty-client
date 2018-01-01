@@ -33,7 +33,7 @@ export class AuthService {
       return this.userInfo;
     }
 
-    const data = this.cookieService.get('user');
+    const data = this.cookieService.get('userr');
     if (data) {
       const json = JSON.parse(data);
       this.extractUserInfo(json);
@@ -56,7 +56,7 @@ export class AuthService {
         }
 
         this.setToDefault();
-        this.cookieService.set('user', JSON.stringify(data));
+        this.cookieService.set('userr', JSON.stringify(data));
         this.extractUserInfo(data);
 
         resolve(this.getUserInfo());
@@ -67,7 +67,11 @@ export class AuthService {
   }
 
   public logoff() {
-    this.cookieService.delete('user');
     this.setToDefault();
+    this.cookieService.delete('userr');
+  }
+
+  public changePassword(info: ChangePasswordInfo) {
+    return this.threesixtyService.changePassword(info);
   }
 }
