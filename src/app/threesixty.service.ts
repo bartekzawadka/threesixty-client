@@ -35,6 +35,13 @@ export class ThreesixtyService {
             reject(erM.error);
           }
         } catch (e) {
+          if (error && error.message) {
+            reject(error.message);
+          } else if (error && error.statusText) {
+            reject(error.statusText);
+          } else {
+            reject(error);
+          }
         }
       } else if (error && error.message) {
         reject(error.message);
