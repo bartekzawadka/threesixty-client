@@ -32,9 +32,9 @@
       </mat-grid-tile-footer>
     </mat-grid-tile>
   </mat-grid-list>
-
-  <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10vh;"
-       *ngIf="!images || !images.Rows || images.Rows.length === 0">
+  <div *ngIf="!images || !images.Rows || images.Rows.length == 0">
+    <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10vh;">
       <h1 class="mat-h1 no-images-placeholder">No images stored yet...</h1>
+    </div>
   </div>
 </div>

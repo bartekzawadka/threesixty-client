@@ -8,6 +8,7 @@ import {FileResult} from '../models/FileResult';
 import {LoginInfo} from '../models/auth/LoginInfo';
 import {UserInfo} from '../models/user/UserInfo';
 import {ChangePasswordInfo} from '../models/auth/ChangePasswordInfo';
+import {RequestOptions, ResponseContentType} from '@angular/http';
 
 @Injectable()
 export class ThreesixtyService {
@@ -73,7 +74,7 @@ export class ThreesixtyService {
       }
 
       this.http.get<any>(uri).subscribe((data) => {
-        const result = new PageableArray();
+        const result = new PageableArray<any>();
         result.PageIndex = skip;
         result.PageSize = limit;
 
@@ -124,9 +125,7 @@ export class ThreesixtyService {
       const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
       // const options = new RequestOptions(<RequestOptionsArgs>{headers: headers});
 
-      this.http.post<any>(environment.threesixtyServiceUrl + '/api/image/upload', formData, {
-        headers: headers
-      })
+      this.http.post<any>(environment.threesixtyServiceUrl + '/api/image/upload', formData)
         .subscribe((data) => {
           resolve(data);
         }, (error) => {
@@ -145,11 +144,15 @@ export class ThreesixtyService {
         url += ((url.indexOf('?') === -1) ? '?' : '&') + 'fileName=' + fileName;
       }
 
-      this.http.get<any>(url, {
-        responseType: 'arrayBuffer' as 'json'
-      }).subscribe((data) => {
+      // let headers = new HttpHeaders({'responseType': 'blob'});
+
+      this.http.get(url,
+      ).subscribe((da) => {
 
         try {
+          console.log(da);
+
+          const data = <any>da;
 
           if (!data || !data.headers) {
             reject('Response could not be parsed. No headers received');
