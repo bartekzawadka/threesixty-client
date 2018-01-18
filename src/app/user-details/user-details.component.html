@@ -1,0 +1,26 @@
+<div fxFlex fxLayout="row" fxLayoutAlign="center center" class="card-box">
+  <mat-card class="details-card" *ngIf="sections && data && data.id">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <h3 class="mat-title">
+        User details
+      </h3>
+    </div>
+    <mat-card-content>
+
+      <div class="details-section" *ngFor="let item of sections">
+        <div fxFlex fxLayout="row" fxLayoutAlign="stretch center">
+          <div class="details-label">{{item.Label}}:</div>
+          <span fxFlex></span>
+          <div class="details-value" *ngIf="!item.IsDate">{{item.Value}}</div>
+          <div class="details-value" *ngIf="item.IsDate">{{item.Value | date: "yyyy-MM-dd HH:mm:ss" }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-action-row>
+      <button mat-raised-button (click)="goBack()" type="button">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
+    </mat-action-row>
+  </mat-card>
+</div>

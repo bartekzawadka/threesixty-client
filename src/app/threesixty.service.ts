@@ -261,4 +261,13 @@ export class ThreesixtyService {
         }, error => ThreesixtyService.handleError(error, reject));
     });
   }
+
+  getUser(username: string): Promise<UserInfo> {
+    return new Promise<UserInfo>((resolve, reject) => {
+      this.http.get<UserInfo>(environment.threesixtyServiceUrl + '/api/user/' + username)
+        .subscribe(data => {
+          resolve(data);
+        }, error => ThreesixtyService.handleError(error, reject));
+    });
+  }
 }

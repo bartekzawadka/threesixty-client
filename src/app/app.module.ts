@@ -24,6 +24,7 @@ import {TokenInterceptor} from './auth/token.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     ImageDetailsComponent,
     LoginComponent,
     ManageUsersComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,4 +3,5 @@ export class UserInfo {
   username: string;
   fullname: string;
   createdAt: string;
+  lastLogin: string;
 }

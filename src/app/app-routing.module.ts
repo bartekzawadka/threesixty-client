@@ -5,6 +5,7 @@ import {NewImageComponent} from './new-image/new-image.component';
 import {ImageDetailsComponent} from './image-details/image-details.component';
 import {ManageUsersComponent} from './manage-users/manage-users.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
+import {UserDetailsComponent} from './user-details/user-details.component';
 
 const appRoutes: Routes = [
   {
@@ -30,6 +31,10 @@ const appRoutes: Routes = [
   {
     path: 'admin/changePassword',
     component: ChangePasswordComponent
+  },
+  {
+    path: 'admin/user/:username',
+    component: UserDetailsComponent
   }
 ];
 
