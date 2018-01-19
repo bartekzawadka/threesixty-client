@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {PageableArray} from '../models/PageableArray';
 import {ImagesFilter} from '../models/ImagesFilter';
@@ -8,7 +8,6 @@ import {FileResult} from '../models/FileResult';
 import {LoginInfo} from '../models/auth/LoginInfo';
 import {UserInfo} from '../models/user/UserInfo';
 import {ChangePasswordInfo} from '../models/auth/ChangePasswordInfo';
-import {RequestOptions, ResponseContentType} from '@angular/http';
 
 @Injectable()
 export class ThreesixtyService {
@@ -122,9 +121,6 @@ export class ThreesixtyService {
         formData.append('files[' + k + ']', files[k], files[k].name);
       }
 
-      const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
-      // const options = new RequestOptions(<RequestOptionsArgs>{headers: headers});
-
       this.http.post<any>(environment.threesixtyServiceUrl + '/api/image/upload', formData)
         .subscribe((data) => {
           resolve(data);
@@ -144,62 +140,56 @@ export class ThreesixtyService {
         url += ((url.indexOf('?') === -1) ? '?' : '&') + 'fileName=' + fileName;
       }
 
-      // let headers = new HttpHeaders({'responseType': 'blob'});
+      this.http.get(url, {observe: 'response', responseType: 'arrayBuffer' as 'json'}
+      ).subscribe((data) => {
 
-      this.http.get(url,
-      ).subscribe((da) => {
+          try {
+            if (!data || !data.headers) {
+              reject('Response could not be parsed. No headers received');
+              return;
+            }
 
-        try {
-          console.log(da);
+            if (!data['body']) {
+              reject('Empty data received');
+            }
 
-          const data = <any>da;
+            const contentType = data.headers.get('content-type');
+            const contentDisposition = data.headers.get('content-disposition');
 
-          if (!data || !data.headers) {
-            reject('Response could not be parsed. No headers received');
-            return;
+            if (!contentType || !contentDisposition) {
+              reject('Response does not contain expected headers. Invalid format');
+              return;
+            }
+
+            const parts: string[] = contentDisposition.split(';');
+            if (!parts || parts.length < 2) {
+              reject('Content disposition header has invalid format');
+              return;
+            }
+
+            const fileNameParts = parts[1].split('=');
+            let fName: string;
+
+            if (!fileNameParts || fileNameParts.length < 2) {
+              console.warn('Content disposition header does not contain file name');
+              fName = 'file';
+            } else {
+              fName = fileNameParts[1];
+            }
+            const filename = fName;
+
+            const result = new FileResult();
+            result.FileData = new Blob([data['body']], {type: contentType});
+            result.FileName = filename;
+
+            resolve(result);
+
+          } catch (e) {
+            reject(e);
           }
-
-          if (!data['_body']) {
-            reject('Empty data received');
-          }
-
-          const contentType = data.headers.get('content-type');
-          const contentDisposition = data.headers.get('content-disposition');
-
-          if (!contentType || !contentDisposition) {
-            reject('Response does not contain expected headers. Invalid format');
-            return;
-          }
-
-          const parts: string[] = contentDisposition.split(';');
-          if (!parts || parts.length < 2) {
-            reject('Content disposition header has invalid format');
-            return;
-          }
-
-          const fileNameParts = parts[1].split('=');
-          let fName: string;
-
-          if (!fileNameParts || fileNameParts.length < 2) {
-            console.warn('Content disposition header does not contain file name');
-            fName = 'file';
-          } else {
-            fName = fileNameParts[1];
-          }
-          const filename = fName;
-
-          const result = new FileResult();
-          result.FileData = new Blob([data['_body']], {type: contentType});
-          result.FileName = filename;
-
-          resolve(result);
-
-        } catch (e) {
-          reject(e);
-        }
-      }, (error) => {
-        ThreesixtyService.handleError(error, reject);
-      });
+        }, (error) => {
+          ThreesixtyService.handleError(error, reject);
+        });
     });
   }
 
